@@ -9,10 +9,10 @@ public class Main {
         System.out.println("Welcome to Conway's Game of Life!");
         System.out.println("How big would you like the board?");
         System.out.print("rows: ");
-        y = in.nextInt();
+        x = in.nextInt();
 
         System.out.print("columns: ");
-        x = in.nextInt();
+        y = in.nextInt();
 
         Life game = new Life(x,y);
 
