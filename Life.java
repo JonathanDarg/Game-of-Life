@@ -17,10 +17,9 @@ public class Life {
     * @param y
     */
     public void birthCell(int x, int y) {
-        if( x >=0 && y >= 0){
-            gameBoard[x][y] = 1;
+        if( x >=0 && y >= 0 && x < gameBoard[0].length && y < gameBoard.length){
+            gameBoard[y][x] = 1;
         }
-
     }
 
     /*
@@ -32,72 +31,65 @@ public class Life {
         for (int row = 0; row < gameBoard.length; row++) {
             for (int col = 0; col < gameBoard[row].length; col++) {
                 int count = 0;
-                //neighbors and bounds of board
-                if (row - 1 >= 0 && col - 1 >= 0 && gameBoard[row - 1][col - 1] == 1) {
-                    count++;
-                }
-                if (row - 1 >= 0 && gameBoard[row - 1][col] == 1) {
-                    count++;
-                }
-                if (row - 1 >= 0 && col + 1 < gameBoard[row].length && gameBoard[row - 1][col + 1] == 1) {
-                    count++;
-                }
-                if (col - 1 >= 0 && gameBoard[row][col - 1] == 1) {
-                    count++;
-                }
-                if (col + 1 < gameBoard[row].length && gameBoard[row][col + 1] == 1) {
-                    count++;
-                }
-                if (row + 1 < gameBoard.length && col - 1 >= 0 && gameBoard[row + 1][col - 1] == 1) {
-                    count++;
-                }
-                if (row + 1 < gameBoard.length && gameBoard[row + 1][col] == 1) {
-                    count++;
-                }
-                if (row + 1 < gameBoard.length && col + 1 < gameBoard[row].length && gameBoard[row + 1][col + 1] == 1) {
-                    count++;
+
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        if (i == 0 && j == 0) continue;
+                        int newRow = row + i;
+                        int newCol = col + j;
+                        if (newRow >= 0 && newRow < gameBoard.length &&
+                            newCol >= 0 && newCol < gameBoard[row].length &&
+                            gameBoard[newRow][newCol] == 1) {
+                            count++;
+                        }
+                    }
                 }
 
-                //living cells rules 1-3
                 if (gameBoard[row][col] == 1) {
-                    if (count < 2){
+                    if (count < 2 || count > 3){
                         newBoard[row][col] = 0;
-                    } else if (count == 2 || count == 3){
+                    } else {
                         newBoard[row][col] = 1;
-                    } else{
-                        newBoard[row][col] = 0;
                     }
-                //dead cell rule 4
                 } else {
                     if (count == 3){
                         newBoard[row][col] = 1;
-                    } else{
+                    } else {
                         newBoard[row][col] = 0;
                     }
                 }
             }
-    }
-    //copies new board to game board
-    for (int row = 0; row < gameBoard.length; row++) {
-        for (int col = 0; col < gameBoard[row].length; col++) {
-            gameBoard[row][col] = newBoard[row][col];
+        }
+
+        // copy newBoard back to gameBoard
+        for (int row = 0; row < gameBoard.length; row++) {
+            for (int col = 0; col < gameBoard[row].length; col++) {
+                gameBoard[row][col] = newBoard[row][col];
+            }
         }
     }
 
-}
+    /*
+    * Prints out the game board line by line with color
+    */
+    public String toString() {
+        final String RESET = "\u001B[0m";
+        final String YELLOW = "\u001B[33m";
+        final String WHITE = "\u001B[37m";
 
-/*
-* Prints out the game board line by line with /n
-* @return returnString
-*/
-public String toString() {
-    String display = "";
-    for (int i = 0; i < gameBoard.length; i++) {
-        for (int j = 0; j < gameBoard[i].length; j++) {
-            display += gameBoard[i][j] + " ";
+        StringBuilder display = new StringBuilder();
+
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                if (gameBoard[i][j] == 1) {
+                    display.append(YELLOW).append("■ ").append(RESET);
+                } else {
+                    display.append(WHITE).append("□ ").append(RESET);
+                }
+            }
+            display.append("\n");
         }
-        display += "\n";
-    }
-    return display;
+
+        return display.toString();
     }
 }
