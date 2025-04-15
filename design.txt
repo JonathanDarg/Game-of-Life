@@ -1,0 +1,37 @@
+method public advanceTime()
+V1)
+    1. for every cell
+        a. count its neighbors by going r-1 c-1, r-1 c, r-1 c+1, r c-1, r c+1, r+1 c-1, r+1 c, r+1 c+1
+            1.if neighbor equals one add one to count
+                i.if it has fewer than two
+                    a.set cell to a zero
+                ii.if it has two or three neighbors
+                    a. set cell to one
+                iii.if cell has more than three neighbours
+                    a. set cell to 0
+                iV. if dead cell has three neighbors
+                    a. set cell to 1
+V2)
+    1.for every cell
+        a. set count to zero
+        b.if r-1 c-1, r-1 c, r-1 c+1, r c-1, r c+1, r+1 c-1, r+1 c, r+1 c+1 equal 1 and row and column are not out or bounds
+            i. count ++
+        c. if it is a live cell
+            i. if count is greater than 2
+                i. set it to zero
+            ii. otherwise if count is equal to 2 or 3
+                i. set it to one
+            iii. otherwise set it to zero
+        d. otherwise
+            i. if count is equal to 3
+                i. set it to one
+            ii. set it to zero
+        e. copy new board to board
+
+
+
+Rules:
+    1.Any live cell with fewer than two live neighbours dies
+    2.Any live cell with two or three live neighbours lives on to the next generation.
+    3.Any live cell with more than three live neighbours dies
+    4.Any dead cell with exactly three live neighbours becomes a live cell
